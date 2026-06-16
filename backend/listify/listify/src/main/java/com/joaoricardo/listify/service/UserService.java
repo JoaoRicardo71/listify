@@ -16,6 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     /*REGISTRO*/
     public User register(RegisterRequest request) {
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     /*LOGIN*/
-    public User login(LoginRequest request) {
+    public String login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -54,6 +55,6 @@ public class UserService {
             throw new RuntimeException("Senha inválida");
         }
 
-        return user;
+        return jwtService.generateToken(user.getEmail());
     }
 }

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.joaoricardo.listify.dto.auth.LoginRequest;
+import com.joaoricardo.listify.dto.auth.LoginResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,7 +24,11 @@ public class AuthController {
 
     /*LOGIN*/
     @PostMapping("/login")
-    public User login(@RequestBody @Valid LoginRequest request) {
-        return userService.login(request);
+    public LoginResponse login(
+            @RequestBody @Valid LoginRequest request) {
+
+        String token = userService.login(request);
+
+        return new LoginResponse(token);
     }
 }
